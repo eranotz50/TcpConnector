@@ -24,7 +24,14 @@ func main() {
 		}
 		
 		connector := c.TcpConnector{ Socket : conn, IsLoggedIn : false}
-		go connector.StartReceive()			
+
+		fmt.Println(connector.String())
+
+		//c.packet packet =	
+
+		go connector.StartReceive(func(msg string){
+			fmt.Println("msg -> " + msg)
+		})			
 	}
 
 

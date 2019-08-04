@@ -19,20 +19,32 @@ func (c TcpConnector) String() string {
 	return c.Socket.RemoteAddr().String();
 }
 
+func BuildMenu() string {
+	return "(1) Login \n(2) List Devices \n(3) Switch On\\Off \n (4) Set"
+}
+
+type packet func(string)
+
 // (string, error)
-func(c TcpConnector)  StartReceive() {	
+func(c TcpConnector)  StartReceive(onPacket packet) {	
+
+	c.isRunning = true
+
+	var menu = BuildMenu();
+	bufio.NewWriter(c.Socket).WriteString(menu)
 
 	for {
-		
+				
 		netData, err := bufio.NewReader(c.Socket).ReadString('\n')	
-		
+				
 		if(err != nil){
 			log.Fatal("Error from TcpConnector.StartRecive()", err)
 		}
-
+			
 		netData = strings.TrimSpace(string(netData))
+		onPacket(netData)
 
-		fmt.Printf("%s",netData)
+		//fmt.Println(netData)
 
 		if(!c.isRunning){
 			break
