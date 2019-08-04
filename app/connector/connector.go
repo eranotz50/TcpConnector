@@ -15,12 +15,12 @@ type TcpConnector struct{
 }
 
 
-func (c TcpConnector) ToString() string {
+func (c TcpConnector) String() string {
 	return c.Socket.RemoteAddr().String();
 }
 
 // (string, error)
-func(c TcpConnector)  StartRecive() {	
+func(c TcpConnector)  StartReceive() {	
 
 	for {
 		
@@ -30,9 +30,9 @@ func(c TcpConnector)  StartRecive() {
 			log.Fatal("Error from TcpConnector.StartRecive()", err)
 		}
 
-		messageStr := strings.TrimSpace(string(netData))
+		netData = strings.TrimSpace(string(netData))
 
-		fmt.Printf("%s",messageStr)
+		fmt.Printf("%s",netData)
 
 		if(!c.isRunning){
 			break

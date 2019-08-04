@@ -9,7 +9,7 @@ import c "hello/app/connector"
 	    "log"
         "os")*/
 func main() {
-	fmt.Printf("hello, world\n")
+	fmt.Printf("main\n")
 
     ln, err := net.Listen("tcp",":9055");
    
@@ -22,12 +22,9 @@ func main() {
 		if err != nil {
 			log.Fatal("Error from listener.Accept()", err)
 		}
-
 		
-		connector := c.TcpConnector{ Socket : conn, User : "Eran", IsLoggedIn : false}
-		fmt.Printf(connector.User);
-
-		
+		connector := c.TcpConnector{ Socket : conn, IsLoggedIn : false}
+		go connector.StartReceive()			
 	}
 
 
