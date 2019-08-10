@@ -37,12 +37,11 @@ func main() {
 
 		go connector.StartReceive(func(msg string){
 
-			parts := strings.Split(msg,",")
-			commandName := parts[0]	
+			parameters := strings.Split(msg,",")
+			commandName := parameters[0]	
 			
-			parameter := cmd.CommandParameter{ UserName : connector.UserName , Parts : parts }
 
-			result, _ := commands[commandName].Execute(parameter)
+			result, _ := commands[commandName].Execute(connector,parameters)
 			connector.Send(result)
 		})			
 	}	

@@ -4,17 +4,13 @@ import d "hello/app/device"
 //import "strings"
 import "errors"
 
-import auth "hello/app/auth"
+import c "hello/app/connector"
 import "strconv"
 
 
-type CommandParameter struct{  
-	UserName string
-	Parts []string	
-}
 
 type Command interface {
-	Execute(c CommandParameter) (string,error)
+	Execute(c c.TcpConnector,params []string) (string,error)
 }
 
 type AuthDecoratorCommand struct{
@@ -22,10 +18,11 @@ type AuthDecoratorCommand struct{
 }
 
 type LoginCommand struct {
+
 }
 
 type ListDevicesCommand struct{
-
+	// todo : validate method in each command
 }
 
 type SwitchCommand struct{
@@ -38,28 +35,27 @@ type SetCommand struct{
 
 
 
-func(a *AuthDecoratorCommand) Execute(params CommandParameter) (string,error) {
-
-	if(auth.CheckLogin(params.UserName)){
-		return a.Command.Execute(params)
+func(a *AuthDecoratorCommand) Execute(c c.TcpConnector,params []string) (string,error){	
+	if c.UserName != "" {
+		return a.Command.Execute(c,params)
 	}
-
-	return "Login Required",nil
+	
+	return "Login Required.", nil
 }
 
 // parts := strings.Split(params, ",")
-func (p *LoginCommand) Execute(c CommandParameter) (string,error) {
+func (p *LoginCommand) Execute(c c.TcpConnector,params []string) (string,error){	
 		
-	if len(c.Parts) != 1{
+	if len(params) != 1{
 		return "",errors.New("LoginCommand should contain only one paramter")
 	}
 	
-	auth.Login(c.UserName)
+	c.UserName = params[1]
 
 	return c.UserName + " Is Logged in.",nil
 }
 
-func (p *ListDevicesCommand) Execute(c CommandParameter) (string,error) {
+func (p *ListDevicesCommand) Execute(c c.TcpConnector,params []string) (string,error){	
 	
 	devicesStr := ""
 
@@ -71,10 +67,10 @@ func (p *ListDevicesCommand) Execute(c CommandParameter) (string,error) {
 
 }
 
-func (p *SwitchCommand) Execute(c CommandParameter) (string,error) {
+func (p *SwitchCommand) Execute(c c.TcpConnector,params []string) (string,error){	
 	
 	
-	if len(c.Parts) != 2{
+	if len(params) != 2{
 		return "",errors.New("SwitchCommand should contain only 2 paramters")
 	}
 
