@@ -3,7 +3,7 @@ package connector
 //import "fmt"
 import "strings"
 import "net"
-import "log"
+//import "log"
 import "bufio"
 
 
@@ -23,10 +23,8 @@ func BuildMenu() string {
 	return "(1) Login \n(2) List Devices \n(3) Switch On\\Off \n (4) Set"
 }
 
-type packet func(string)
 
-// (string, error)
-func(c TcpConnector)  StartReceive(onPacket packet) {	
+func(c TcpConnector)  StartReceive(onPacket func(string)) {	
 
 	c.isRunning = true
 
@@ -37,15 +35,14 @@ func(c TcpConnector)  StartReceive(onPacket packet) {
 				
 		netData, err := bufio.NewReader(c.Socket).ReadString('\n')	
 				
-		if(err != nil){
-			log.Fatal("Error from TcpConnector.StartRecive()", err)
+		if err != nil {
+			//log.Fatal("Error from TcpConnector.StartRecive()", err)
+			c.isRunning = false
+		}else{
+			netData = strings.TrimSpace(string(netData))
+			onPacket(netData)
 		}
-			
-		netData = strings.TrimSpace(string(netData))
-		onPacket(netData)
-
-		//fmt.Println(netData)
-
+					
 		if(!c.isRunning){
 			break
 		}	

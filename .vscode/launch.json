@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "debug",
-            "program": "D:\\go\\src\\hello\\app\\hello.go",
+            "program": "D:\\go\\src\\hello\\app\\main.go",
             "port" : 2345,
             "host" : "127.0.0.1",
             "env": {},
