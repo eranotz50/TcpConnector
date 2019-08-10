@@ -49,10 +49,12 @@ func(c TcpConnector)  StartReceive(onPacket func(string)) {
 		if(!c.isRunning){
 			break
 		}	
-	}
-	
+	}	
+}
 
-	//return netData, err
+func(c TcpConnector) Send(msg string){
+	buf := 	[]byte(msg)
+	c.Socket.Write(buf)
 }
 
 /*

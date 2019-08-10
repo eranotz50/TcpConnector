@@ -3,8 +3,9 @@ package main
 import "fmt"
 import "log"
 import "net"
+//import d "hello/app/device"
 import c "hello/app/connector"
-import cmd "hello/app/commands"
+//import cmd "hello/app/commands"
 
 
 /*("fmt"
@@ -36,21 +37,4 @@ func main() {
 	}	
 }
 
-func GetDevices() []cmd.Device{
-	return []cmd.Device{cmd.Device{ Id : 1, Name : "Lamp" } }
-}
 
-
-
-
-
-
-	// Console.ReadKey()
-	/*b := make([]byte, 10)
-	chr, err := os.Stdin.Read(b);	
-
-	fmt.Printf("%c",chr);
-
-	if  err != nil {
-	   log.Fatal(err)
-	}*/
