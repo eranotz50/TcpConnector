@@ -9,7 +9,7 @@ import "bufio"
 
 type TcpConnector struct{
 	Socket net.Conn 
-	User   string
+	UserName   string
 	IsLoggedIn bool
 	isRunning bool
 }

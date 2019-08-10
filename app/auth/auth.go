@@ -11,4 +11,9 @@ func Login(name string){
 	}
 }
 
+func CheckLogin(name string) bool{
+	_, isExists := _usersMap[name]
+	return isExists
+}
+
 
