@@ -1,16 +1,13 @@
 package commands
 
 import d "hello/app/device"
-//import "strings"
 import "errors"
-
-import c "hello/app/connector"
 import "strconv"
 
 
 
 type Command interface {
-	Execute(c c.TcpConnector,params []string) (string,error)
+	Execute(userName *string,params []string) (string,error)
 }
 
 type AuthDecoratorCommand struct{
@@ -35,27 +32,27 @@ type SetCommand struct{
 
 
 
-func(a *AuthDecoratorCommand) Execute(c c.TcpConnector,params []string) (string,error){	
-	if c.UserName != "" {
-		return a.Command.Execute(c,params)
+func(a *AuthDecoratorCommand) Execute(userName *string,params []string) (string,error){	
+	if *userName != "" {
+		return a.Command.Execute(userName,params)
 	}
 	
 	return "Login Required.", nil
 }
 
 // parts := strings.Split(params, ",")
-func (p *LoginCommand) Execute(c c.TcpConnector,params []string) (string,error){	
+func (p *LoginCommand) Execute(userName *string,params []string) (string,error){	
 		
 	if len(params) != 1{
 		return "",errors.New("LoginCommand should contain only one paramter")
 	}
 	
-	c.UserName = params[1]
+	*userName = params[1]
 
-	return c.UserName + " Is Logged in.",nil
+	return *userName + " Is Logged in.",nil
 }
 
-func (p *ListDevicesCommand) Execute(c c.TcpConnector,params []string) (string,error){	
+func (p *ListDevicesCommand) Execute(userName *string,params []string) (string,error){	
 	
 	devicesStr := ""
 
@@ -67,19 +64,19 @@ func (p *ListDevicesCommand) Execute(c c.TcpConnector,params []string) (string,e
 
 }
 
-func (p *SwitchCommand) Execute(c c.TcpConnector,params []string) (string,error){	
+func (p *SwitchCommand) Execute(userName *string,params []string) (string,error){	
 	
 	
 	if len(params) != 2{
 		return "",errors.New("SwitchCommand should contain only 2 paramters")
 	}
 
-	state, err := strconv.Atoi(c.Parts[0])
+	state, err := strconv.Atoi(params[0])
 	if(err != nil){
 		return "",err
 	}
 
-	deviceId, err := strconv.Atoi(c.Parts[1])
+	deviceId, err := strconv.Atoi(params[1])
 	if(err != nil){
 		return "",err
 	}
@@ -94,6 +91,6 @@ func (p *SwitchCommand) Execute(c c.TcpConnector,params []string) (string,error)
 	return device.String(),nil
 }
 
-func (p *SetCommand) Execute(c CommandParameter) (string,error) {
+func (p *SetCommand) Execute(userName *string,params []string) (string,error) {
 	return "react pings",nil
 }
