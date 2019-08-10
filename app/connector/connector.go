@@ -20,16 +20,19 @@ func (c TcpConnector) String() string {
 }
 
 func BuildMenu() string {
-	return "(1) Login \n(2) List Devices \n(3) Switch On\\Off \n (4) Set"
+	return "(1) Login \n\r(2) List Devices \n\r(3) Switch On\\Off \n\r(4) Set"
 }
 
 
 func(c TcpConnector)  StartReceive(onPacket func(string)) {	
 
 	c.isRunning = true
-
+	
 	var menu = BuildMenu();
-	bufio.NewWriter(c.Socket).WriteString(menu)
+    buf := 	[]byte(menu)
+	
+	c.Socket.Write(buf)
+	//bufio.NewWriter(c.Socket).WriteString(menu)
 
 	for {
 				
