@@ -4,6 +4,8 @@ import "fmt"
 import "log"
 import "net"
 import c "hello/app/connector"
+import cmd "hello/app/commands"
+
 
 /*("fmt"
 	    "log"
@@ -27,15 +29,15 @@ func main() {
 
 		fmt.Println(connector.String())
 
-		//c.packet packet =	
 
 		go connector.StartReceive(func(msg string){
 			fmt.Println("msg -> " + msg)
 		})			
-	}
+	}	
+}
 
-
-	
+func GetDevices() []cmd.Device{
+	return []cmd.Device{cmd.Device{ Id : 1, Name : "Lamp" } }
 }
 
 
