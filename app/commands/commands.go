@@ -47,7 +47,7 @@ func (p *LoginCommand) Execute(userName *string,params []string) (string,error){
 		return "",errors.New("LoginCommand should contain only one paramter")
 	}
 	
-	*userName = params[1]
+	*userName = params[0]
 
 	return *userName + " Is Logged in.",nil
 }
