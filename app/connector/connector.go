@@ -39,7 +39,7 @@ func(c TcpConnector)  StartReceive(onPacket func(string)) {
 		}
 					
 		if(!c.isRunning){
-			fmt.Println("Disconnected -> " +  c.Socket.RemoteAddr().String())
+			fmt.Println("Disconnected -> " +  c.String())
 			break
 		}	
 	}	
