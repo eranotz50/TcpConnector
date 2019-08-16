@@ -3,6 +3,7 @@ package commands
 import d "hello/app/device"
 import "errors"
 import "strconv"
+import "strings"
 
 
 
@@ -57,16 +58,17 @@ func (p *ListDevicesCommand) Execute(userName *string,params []string) (string,e
 	devicesStr := ""
 
 	for _, device := range d.Devices {
-		devicesStr += device.String()	
+		devicesStr += device.String() + ","	
 	}
+
+	devicesStr = TrimSuffix(devicesStr,",")
 
 	return devicesStr,nil
 
 }
 
 func (p *SwitchCommand) Execute(userName *string,params []string) (string,error){	
-	
-	
+		
 	if len(params) != 2{
 		return "",errors.New("SwitchCommand should contain only 2 paramters")
 	}
@@ -92,5 +94,33 @@ func (p *SwitchCommand) Execute(userName *string,params []string) (string,error)
 }
 
 func (p *SetCommand) Execute(userName *string,params []string) (string,error) {
-	return "react pings",nil
+	if len(params) != 2{
+		return "",errors.New("SetCommand should contain only 2 paramters")
+	}
+
+	value, err := strconv.Atoi(params[0])
+	if(err != nil){
+		return "",err
+	}
+
+	deviceId, err := strconv.Atoi(params[1])
+	if(err != nil){
+		return "",err
+	}
+
+	device, isDeviceExists := d.Devices[deviceId]	
+	if isDeviceExists == false{
+		return "",errors.New("SwitchCommand could not find device with Id " + string(deviceId))
+	}
+
+	device.Value = value
+
+	return device.String(),nil
+}
+
+func TrimSuffix(s, suffix string) string {
+    if strings.HasSuffix(s, suffix) {
+        s = s[:len(s)-len(suffix)]
+    }
+    return s
 }

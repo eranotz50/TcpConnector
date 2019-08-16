@@ -9,20 +9,18 @@ import c "hello/app/connector"
 import cmd "hello/app/commands"
 
 
-/*("fmt"
-	    "log"
-        "os")*/
 func main() {
 
-	sss := "login eran"
-	p := strings.Split(sss," ")
-
-	fmt.Printf(p[0])
-
 	menu := BuildMenu();
-	//menuPacket := []byte(menu)
+    commands := InitCommands()
 
-	commands := InitCommands()
+	/*device := d.Devices[1]
+	device.State = 1
+
+	fmt.Println("Device After Change -> " + device.String())
+
+	deviceAgain := d.Devices[1]
+	fmt.Printf(deviceAgain.String())*/
 
 	fmt.Printf("main\n")
 
@@ -50,16 +48,24 @@ func main() {
 
 			parameters := strings.Split(msg," ")
 			commandName := parameters[0]	
-						
-			parameters = remove(parameters,0)
-			command := commands[commandName]
-			result, err := command.Execute(&connector.UserName,parameters)
+			if(commandName == ""){
+				return
+			}
 			
-			if err == nil{
-				connector.Send(result)	
-			}else{
-				fmt.Println(err)
-			}							
+			parameters = remove(parameters,0)
+			command, isCommandFound := commands[commandName]
+
+			if !isCommandFound{
+				fmt.Printf("Could not find command " + commandName)
+			}else {
+				result, err := command.Execute(&connector.UserName,parameters)
+			
+				if err == nil{
+					connector.Send(result)	
+				}else{
+					fmt.Println(err)
+				}								
+			}			
 		})			
 	}	
 }

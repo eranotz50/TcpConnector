@@ -2,20 +2,17 @@ package device
 
 import "strconv"
 
-var Devices =  map[int]Device { 1 :Device{ Id : 1, Name : "Lamp" }, 
-							   2: Device{ Id : 2, Name : "AirConditioner"} }
+var Devices =  map[int]*Device { 1 : &Device{ name : "Lamp" }, 
+							    2: &Device{ name : "AirConditioner"} }
 
 type Device struct{
-	Id int
-	Name string
+	name string
 	Value int
 	State int
 }
 
-
-
 func (d *Device) String() string  {
-	return d.Name + "," + strconv.Itoa(d.Value) + "," + strconv.Itoa(d.State)
+	return d.name + "," + strconv.Itoa(d.Value) + "," + strconv.Itoa(d.State)
 }
 
 
